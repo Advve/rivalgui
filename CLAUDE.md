@@ -145,8 +145,8 @@ two things:
 - **Uninstaller icon:** falls back to the installer icon.
 
 After upgrading `@tauri-apps/cli`, fetch the matching upstream template and re-run the patch script. Installer
-artwork comes from `npm run installer:art` (`tools/make-installer-art.mjs`, SVG rendered with the
-`@resvg/resvg-js` dev dependency).
+artwork and the README banner (`docs/banner.png`) come from `npm run art` (`tools/make-art.mjs`,
+SVG rendered with the `@resvg/resvg-js` dev dependency).
 
 ## Licensing
 

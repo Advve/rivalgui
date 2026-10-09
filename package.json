@@ -11,7 +11,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "tauri": "tauri",
     "notices": "node tools/gen-third-party.mjs",
-    "installer:art": "node tools/make-installer-art.mjs",
+    "art": "node tools/make-art.mjs",
     "installer:template": "node tools/patch-nsis-template.mjs"
   },
   "dependencies": {
