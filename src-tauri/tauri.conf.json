@@ -1,0 +1,82 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "RivalGUI",
+  "version": "1.0.0",
+  "identifier": "io.github.rivalgui",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "label": "main",
+        "title": "RivalGUI",
+        "width": 1040,
+        "height": 700,
+        "minWidth": 760,
+        "minHeight": 520,
+        "center": true,
+        "create": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "publisher": "Adve",
+    "copyright": "Copyright © 2026 Adve",
+    "license": "MIT",
+    "targets": [
+      "nsis",
+      "msi",
+      "deb",
+      "appimage",
+      "rpm"
+    ],
+    "category": "Utility",
+    "shortDescription": "SteelSeries mouse configurator",
+    "longDescription": "Configure SteelSeries mice (DPI, polling rate, lighting, buttons) without SteelSeries GG. Based on rivalcfg.",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico",
+      "icons/icon.png"
+    ],
+    "resources": {
+      "../LICENSE": "LICENSE.txt",
+      "../THIRD-PARTY-NOTICES.txt": "THIRD-PARTY-NOTICES.txt"
+    },
+    "windows": {
+      "nsis": {
+        "installMode": "currentUser",
+        "template": "windows/installer.nsi",
+        "installerIcon": "icons/icon.ico",
+        "sidebarImage": "windows/sidebar.bmp",
+        "headerImage": "windows/header.bmp",
+        "installerHooks": "windows/hooks.nsh"
+      }
+    },
+    "linux": {
+      "deb": {
+        "depends": [
+          "libayatana-appindicator3-1"
+        ],
+        "files": {
+          "/etc/udev/rules.d/99-steelseries-rival.rules": "resources/99-steelseries-rival.rules"
+        }
+      },
+      "rpm": {
+        "files": {
+          "/etc/udev/rules.d/99-steelseries-rival.rules": "resources/99-steelseries-rival.rules"
+        }
+      }
+    }
+  }
+}

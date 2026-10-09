@@ -1,0 +1,30 @@
+{
+  "name": "rivalgui",
+  "private": true,
+  "author": "Adve",
+  "license": "MIT",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "tauri": "tauri",
+    "notices": "node tools/gen-third-party.mjs",
+    "installer:art": "node tools/make-installer-art.mjs",
+    "installer:template": "node tools/patch-nsis-template.mjs"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.12.2"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@tauri-apps/cli": "^2.12.1",
+    "@tsconfig/svelte": "^5.0.8",
+    "svelte": "^5.57.2",
+    "svelte-check": "^4.7.6",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.4"
+  }
+}
