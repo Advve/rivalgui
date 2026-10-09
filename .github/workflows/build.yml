@@ -7,6 +7,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Builds only read the repository; the release job asks for write access itself
+permissions:
+  contents: read
+
 jobs:
   build:
     strategy:
@@ -32,6 +36,11 @@ jobs:
         with:
           node-version: 22
           cache: npm
+
+      - name: Check the tag matches the app version
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: node tools/release-notes.mjs --check "${GITHUB_REF_NAME#v}"
 
       - uses: dtolnay/rust-toolchain@stable
 
@@ -62,3 +71,42 @@ jobs:
             src-tauri/target/release/bundle/**/*.deb
             src-tauri/target/release/bundle/**/*.rpm
             src-tauri/target/release/bundle/**/*.AppImage
+
+  # On a version tag (v1.2.3): publish a GitHub Release with every installer
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Collect installers and checksums
+        run: |
+          mkdir release
+          find artifacts -type f \( -name '*.exe' -o -name '*.msi' -o -name '*.deb' -o -name '*.rpm' -o -name '*.AppImage' \) \
+            -exec cp {} release/ \;
+          cd release
+          sha256sum * > SHA256SUMS.txt
+          ls -la
+
+      - name: Write release notes
+        run: node tools/release-notes.mjs "${GITHUB_REF_NAME#v}" > release-notes.md
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" release/* \
+            --title "RivalGUI ${GITHUB_REF_NAME#v}" \
+            --notes-file release-notes.md \
+            --verify-tag

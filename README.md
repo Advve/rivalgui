@@ -42,6 +42,9 @@ Rival, Sensei, Aerox, Prime, Kana, Kinzu), currently in sync with rivalcfg **4.1
 
 ## Install
 
+Download the latest version from the
+[Releases page](https://github.com/Advve/rivalgui/releases/latest).
+
 - **Windows:** run `RivalGUI_x.y.z_x64-setup.exe`. It installs per-user, so no admin is needed.
   The WebView2 runtime ships with Windows 10/11.
   - **Upgrading:** run the newer installer. It detects the installed version, closes the
@@ -120,6 +123,21 @@ cargo test --manifest-path src-tauri/Cargo.toml
 If a new rivalcfg release adds a value type (handler), the golden test fails with
 `Unknown handler`. Port it to `src-tauri/src/core/encode/` and map it to a UI kind in
 `src-tauri/src/core/view.rs`.
+
+## Releasing
+
+1. Set the new version in `package.json`, `src-tauri/tauri.conf.json` and `src-tauri/Cargo.toml`.
+2. Add a `- **X.Y.Z** ...` entry at the top of the changelog below. It becomes the release notes.
+3. Commit, then tag and push:
+
+   ```bash
+   git tag vX.Y.Z
+   git push origin vX.Y.Z
+   ```
+
+CI builds everything, checks that the tag matches all three versions and has a changelog entry,
+then publishes a GitHub Release with the installers and `SHA256SUMS.txt`.
+`node tools/release-notes.mjs --check X.Y.Z` runs the same check locally.
 
 ## Changelog
 

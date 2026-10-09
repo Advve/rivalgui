@@ -158,6 +158,12 @@ SVG rendered with the `@resvg/resvg-js` dev dependency).
 
 ## CI
 
+- **Releases:** pushing a `vX.Y.Z` tag runs the `release` job, which publishes a GitHub Release with all
+  installers and `SHA256SUMS.txt`.
+  - `tools/release-notes.mjs --check X.Y.Z` fails the build early unless `package.json`,
+    `tauri.conf.json` and `Cargo.toml` all say X.Y.Z and the README changelog has a `- **X.Y.Z**` entry.
+  - The release notes are that changelog entry plus the install notes.
+
 `.github/workflows/build.yml` runs `npm run check`, `cargo test` and the bundle build on Windows
 (nsis, msi) and Ubuntu 22.04 (deb, appimage, rpm). Linux needs
 `libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev libudev-dev`. The Linux build has only
