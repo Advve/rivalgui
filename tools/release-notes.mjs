@@ -83,6 +83,11 @@ if (args[0] === "--check") {
     console.error(`README.md has no changelog entry for ${wanted}`);
     process.exit(1);
   }
+  // A release without the updater's public key could never install the next one by itself
+  if (!JSON.parse(readText("src-tauri/tauri.conf.json")).plugins?.updater?.pubkey) {
+    console.error("src-tauri/tauri.conf.json has no plugins.updater.pubkey (see `npx tauri signer generate`)");
+    process.exit(1);
+  }
   console.log(`All versions are ${wanted} and the changelog has an entry for it.`);
 } else if (args[0]) {
   process.stdout.write(notes(args[0]));

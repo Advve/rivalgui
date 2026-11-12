@@ -78,6 +78,8 @@ export interface Prefs {
   auto_apply: boolean;
   notify_low_battery: boolean;
   low_battery_threshold: number;
+  /** Check GitHub for a new version once a day */
+  check_updates: boolean;
 }
 
 export interface AppInfo {
@@ -91,6 +93,8 @@ export interface AppInfo {
   multimedia_keys: string[];
   prefs: Prefs;
   autostart: boolean;
+  /** A newer version found by the update check (not skipped) */
+  update: string | null;
 }
 
 export const api = {
@@ -113,6 +117,10 @@ export const api = {
   setPrefs: (prefs: Prefs) => invoke<Prefs>("set_prefs", { prefs }),
   setAutostart: (enabled: boolean) => invoke<boolean>("set_autostart", { enabled }),
   installUdevRules: () => invoke<void>("install_udev_rules"),
+  checkUpdate: () => invoke<string | null>("check_update"),
+  installUpdate: () => invoke<void>("install_update"),
+  onUpdateChanged: (cb: (version: string | null) => void): Promise<UnlistenFn> =>
+    listen<string | null>("update-changed", (e) => cb(e.payload)),
   onDevicesChanged: (cb: (devices: DeviceStatus[]) => void): Promise<UnlistenFn> =>
     listen<DeviceStatus[]>("devices-changed", (e) => cb(e.payload)),
 };

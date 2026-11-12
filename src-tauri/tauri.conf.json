@@ -27,6 +27,15 @@
       "csp": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
     }
   },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDA5NDcyNjI4QjcwNzQwODUKUldTRlFBZTNLQ1pIQ1VCNVkxSnlIOFRrNlRtYXRkc3NjTTBGelgvSW14b1QramczMXhDck9uVHMK",
+      "endpoints": ["https://github.com/Advve/rivalgui/releases/latest/download/latest.json"],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  },
   "bundle": {
     "active": true,
     "publisher": "Adve",

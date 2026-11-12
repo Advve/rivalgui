@@ -56,6 +56,21 @@ Download the latest version from the
   - The tray needs AppIndicator support. GNOME users need the
     "AppIndicator and KStatusNotifierItem Support" extension.
 
+### Updates
+
+A couple of minutes after it starts, and then once a day, RivalGUI downloads the small `latest.json`
+file from the latest GitHub release to see whether there's a newer version. Nothing else is sent.
+When there is one, an **Update available** item appears at the top of the tray menu (and in
+*Preferences*), and you get one notification for it:
+
+- **Install and restart** downloads the package for your kind of install (setup.exe, MSI, AppImage,
+  .deb or .rpm), checks its signature, installs it and restarts. Settings, shortcuts and "start with
+  system" are kept. The .deb and .rpm ask for your password, like any package install.
+- **What's new** opens the release page. **Skip this version** hides it until a newer one comes out.
+
+Turn the daily check off in *Preferences → Check for updates* or the tray's **Updates** menu, which
+also has **Check now**.
+
 ## How it works
 
 ```
@@ -139,8 +154,22 @@ CI builds everything, checks that the tag matches all three versions and has a c
 then publishes a GitHub Release with the installers and `SHA256SUMS.txt`.
 `node tools/release-notes.mjs --check X.Y.Z` runs the same check locally.
 
+On tags, the installers are signed for the in-app updater: CI adds a `.sig` next to each one and
+writes `latest.json` with `tools/updater-manifest.mjs`. This needs the repository secrets
+`TAURI_SIGNING_PRIVATE_KEY` and `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`. The key pair was made once with
+`npx tauri signer generate -w <file>`, and its public key is `plugins.updater.pubkey` in
+`src-tauri/tauri.conf.json`. Keep a backup of the private key: without it, installed copies can't
+be updated from the app any more.
+
 ## Changelog
 
+- **Unreleased**
+  - New: update check and one-click install. When a new version is out, an *Update available*
+    item appears in the tray menu and in Preferences, with one notification; *Install and restart*
+    downloads it, verifies its signature and restarts. Turn off the daily check in
+    *Preferences → Check for updates*.
+  - **Install this version by hand one last time.** Older versions have no updater, so they won't
+    announce it; from this version on, later releases install from the app.
 - **1.0.0** (first release), with rivalcfg 4.17.0 device support (76 models)
   - Auto-detection, live settings, named profiles, tray service (auto-apply, battery,
     low-battery notification, autostart)

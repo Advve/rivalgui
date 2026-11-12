@@ -14,6 +14,32 @@
     }
   }
 
+  let checking = $state(false);
+  let installing = $state(false);
+
+  async function checkUpdate() {
+    checking = true;
+    try {
+      const update = await api.checkUpdate();
+      onchange({ ...info, update });
+      if (!update) toast(t("upToDate", { version: info.version }), "ok");
+    } catch {
+      toast(t("updateCheckFailed"), "error");
+    } finally {
+      checking = false;
+    }
+  }
+
+  async function installUpdate() {
+    installing = true;
+    try {
+      await api.installUpdate(); // restarts the app when it works
+    } catch (e) {
+      toast(t("updateFailed", { error: errorText(e) }), "error", 8000);
+      installing = false;
+    }
+  }
+
   async function setAutostart(enabled: boolean) {
     try {
       const autostart = await api.setAutostart(enabled);
@@ -99,6 +125,34 @@
         ></button>
       </div>
     </div>
+    <div class="row">
+      <div>
+        <div class="title">{t("updates")}</div>
+        <div class="faint">{t("updatesHint")}</div>
+      </div>
+      <div class="inline">
+        <button class="btn" disabled={checking} onclick={checkUpdate}>{t("checkNow")}</button>
+        <button
+          class="switch"
+          class:on={info.prefs.check_updates}
+          role="switch"
+          aria-checked={info.prefs.check_updates}
+          aria-label={t("updates")}
+          onclick={() => setPrefs({ check_updates: !info.prefs.check_updates })}
+        ></button>
+      </div>
+    </div>
+    {#if info.update}
+      <div class="row">
+        <div>
+          <div class="title">{t("updateAvailable", { version: info.update })}</div>
+          <div class="faint">{t("updateAvailableHint")}</div>
+        </div>
+        <button class="btn" disabled={installing} onclick={installUpdate}
+          >{installing ? t("installingUpdate") : t("installUpdate")}</button
+        >
+      </div>
+    {/if}
     {#if info.platform === "linux"}
       <div class="row">
         <div>

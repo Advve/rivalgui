@@ -1,4 +1,4 @@
-//! System tray icon: battery indicator, device status, profile switching.
+//! System tray icon: battery indicator, device status, profile switching, updates.
 
 use tauri::image::Image;
 use tauri::menu::{CheckMenuItem, IsMenuItem, Menu, MenuEvent, MenuItem, PredefinedMenuItem, Submenu};
@@ -7,6 +7,7 @@ use tauri::{AppHandle, Manager, Wry};
 use tauri_plugin_autostart::ManagerExt;
 
 use super::state::{AppState, DeviceStatus};
+use super::updater::{self, Updates};
 use crate::i18n::{device_name, profile_name, tr, Lang, Text};
 
 const TRAY_ID: &str = "main";
@@ -72,6 +73,20 @@ fn build_menu(app: &AppHandle, devices: &[DeviceStatus]) -> tauri::Result<Menu<W
     let lang = state.lang();
     let mut items: Vec<Box<dyn IsMenuItem<Wry>>> = Vec::new();
 
+    // "Update available" at the top, only while a newer version is offered
+    if app.state::<Updates>().installing() {
+        items.push(Box::new(MenuItem::with_id(app, "update", tr(lang, Text::UpdateInstalling), false, None::<&str>)?));
+        items.push(Box::new(PredefinedMenuItem::separator(app)?));
+    } else if let Some(version) = updater::offered(app) {
+        let install = MenuItem::with_id(app, "update|install", tr(lang, Text::UpdateInstall), true, None::<&str>)?;
+        let notes = MenuItem::with_id(app, "update|notes", tr(lang, Text::UpdateNotes), true, None::<&str>)?;
+        let skip = MenuItem::with_id(app, "update|skip", tr(lang, Text::UpdateSkip), true, None::<&str>)?;
+        let entries: [&dyn IsMenuItem<Wry>; 3] = [&install, &notes, &skip];
+        let title = tr(lang, Text::UpdateAvailable).replace("{version}", &version);
+        items.push(Box::new(Submenu::with_items(app, title, true, &entries)?));
+        items.push(Box::new(PredefinedMenuItem::separator(app)?));
+    }
+
     if devices.is_empty() {
         items.push(Box::new(MenuItem::with_id(app, "none", tr(lang, Text::NoMouse), false, None::<&str>)?));
     }
@@ -116,6 +131,14 @@ fn build_menu(app: &AppHandle, devices: &[DeviceStatus]) -> tauri::Result<Menu<W
     items.push(Box::new(MenuItem::with_id(app, "open", tr(lang, Text::Open), true, None::<&str>)?));
     let autostart = app.autolaunch().is_enabled().unwrap_or(false);
     items.push(Box::new(CheckMenuItem::with_id(app, "autostart", tr(lang, Text::StartWithSystem), true, autostart, None::<&str>)?));
+
+    let version = tr(lang, Text::UpdateVersion).replace("{version}", &app.package_info().version.to_string());
+    let version = MenuItem::with_id(app, "version", version, false, None::<&str>)?;
+    let check_updates = state.store.lock().unwrap().config.prefs.check_updates;
+    let auto = CheckMenuItem::with_id(app, "updates|auto", tr(lang, Text::UpdateAuto), true, check_updates, None::<&str>)?;
+    let check = MenuItem::with_id(app, "updates|check", tr(lang, Text::UpdateCheck), true, None::<&str>)?;
+    let entries: [&dyn IsMenuItem<Wry>; 3] = [&version, &auto, &check];
+    items.push(Box::new(Submenu::with_items(app, tr(lang, Text::Updates), true, &entries)?));
     items.push(Box::new(PredefinedMenuItem::separator(app)?));
     items.push(Box::new(MenuItem::with_id(app, "quit", tr(lang, Text::Quit), true, None::<&str>)?));
 
@@ -132,6 +155,19 @@ fn on_menu_event(app: &AppHandle, event: MenuEvent) {
         ["autostart"] => {
             let launcher = app.autolaunch();
             let _ = if launcher.is_enabled().unwrap_or(false) { launcher.disable() } else { launcher.enable() };
+            super::watcher::publish(app);
+        }
+        ["update", "install"] => updater::install_from_tray(app),
+        ["update", "notes"] => updater::open_release_page(app),
+        ["update", "skip"] => updater::skip(app),
+        ["updates", "check"] => updater::check_from_tray(app),
+        ["updates", "auto"] => {
+            {
+                let state = app.state::<AppState>();
+                let mut store = state.store.lock().unwrap();
+                store.config.prefs.check_updates = !store.config.prefs.check_updates;
+                let _ = store.save();
+            }
             super::watcher::publish(app);
         }
         ["profile", key, name] => {

@@ -10,6 +10,7 @@ use crate::core::view::SettingView;
 use crate::i18n::coded;
 use crate::service::state::{AppState, DeviceDetail, DeviceStatus};
 use crate::service::store::{Prefs, Store};
+use crate::service::updater;
 use crate::service::watcher::publish;
 
 type CmdResult<T> = Result<T, String>;
@@ -36,6 +37,8 @@ pub struct AppInfo {
     multimedia_keys: Vec<String>,
     prefs: Prefs,
     autostart: bool,
+    /// A newer version found by the update check (not skipped)
+    update: Option<String>,
 }
 
 #[tauri::command]
@@ -58,7 +61,20 @@ pub fn get_app_info(app: AppHandle) -> AppInfo {
         multimedia_keys: cat.layouts.multimedia_keys.clone(),
         prefs,
         autostart: app.autolaunch().is_enabled().unwrap_or(false),
+        update: updater::offered(&app),
     }
+}
+
+/// Checks GitHub for a new version now. Returns it, or null when this is the latest.
+#[tauri::command]
+pub async fn check_update(app: AppHandle) -> CmdResult<Option<String>> {
+    updater::check_now(&app).await
+}
+
+/// Installs the offered update and restarts (does not return on success).
+#[tauri::command]
+pub async fn install_update(app: AppHandle) -> CmdResult<()> {
+    updater::install(&app).await
 }
 
 #[tauri::command]

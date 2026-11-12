@@ -43,6 +43,24 @@ pub enum Text {
     LowBatteryTitle,
     /// "{name}: {level}% left"
     LowBatteryBody,
+    /// "Update available: {version}"
+    UpdateAvailable,
+    UpdateInstall,
+    UpdateNotes,
+    UpdateSkip,
+    UpdateInstalling,
+    Updates,
+    /// "Version {version}"
+    UpdateVersion,
+    UpdateAuto,
+    UpdateCheck,
+    /// "RivalGUI {version} is available"
+    UpdateNotifyTitle,
+    UpdateNotifyBody,
+    /// "You have the latest version ({version})."
+    UpdateLatest,
+    UpdateCheckFailed,
+    UpdateInstallFailed,
 }
 
 pub fn tr(lang: Lang, text: Text) -> &'static str {
@@ -61,6 +79,20 @@ pub fn tr(lang: Lang, text: Text) -> &'static str {
             Connected => "connected",
             LowBatteryTitle => "Low mouse battery",
             LowBatteryBody => "{name}: {level}% left",
+            UpdateAvailable => "Update available: {version}",
+            UpdateInstall => "Install and restart",
+            UpdateNotes => "What's new",
+            UpdateSkip => "Skip this version",
+            UpdateInstalling => "Installing update…",
+            Updates => "Updates",
+            UpdateVersion => "Version {version}",
+            UpdateAuto => "Check automatically",
+            UpdateCheck => "Check now",
+            UpdateNotifyTitle => "RivalGUI {version} is available",
+            UpdateNotifyBody => "Install it from the tray menu or Preferences.",
+            UpdateLatest => "You have the latest version ({version}).",
+            UpdateCheckFailed => "Couldn't check for updates.",
+            UpdateInstallFailed => "The update couldn't be installed. Opening the release page instead.",
         },
         Lang::Pl => match text {
             NoMouse => "Nie wykryto myszy",
@@ -75,6 +107,20 @@ pub fn tr(lang: Lang, text: Text) -> &'static str {
             Connected => "podłączona",
             LowBatteryTitle => "Niski poziom baterii myszy",
             LowBatteryBody => "{name}: pozostało {level}%",
+            UpdateAvailable => "Dostępna aktualizacja: {version}",
+            UpdateInstall => "Zainstaluj i uruchom ponownie",
+            UpdateNotes => "Co nowego",
+            UpdateSkip => "Pomiń tę wersję",
+            UpdateInstalling => "Instalowanie aktualizacji…",
+            Updates => "Aktualizacje",
+            UpdateVersion => "Wersja {version}",
+            UpdateAuto => "Sprawdzaj automatycznie",
+            UpdateCheck => "Sprawdź teraz",
+            UpdateNotifyTitle => "Dostępny RivalGUI {version}",
+            UpdateNotifyBody => "Zainstaluj go z menu w zasobniku lub w Preferencjach.",
+            UpdateLatest => "Masz najnowszą wersję ({version}).",
+            UpdateCheckFailed => "Nie udało się sprawdzić aktualizacji.",
+            UpdateInstallFailed => "Nie udało się zainstalować aktualizacji. Otwieram stronę wydania.",
         },
     }
 }

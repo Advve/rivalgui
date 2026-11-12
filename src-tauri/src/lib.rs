@@ -43,7 +43,9 @@ pub fn run() {
             Some(vec![MINIMIZED_FLAG]),
         ))
         .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .manage(AppState::new())
+        .manage(service::updater::Updates::default())
         .invoke_handler(tauri::generate_handler![
             commands::get_app_info,
             commands::list_devices,
@@ -61,10 +63,13 @@ pub fn run() {
             commands::set_prefs,
             commands::set_autostart,
             commands::install_udev_rules,
+            commands::check_update,
+            commands::install_update,
         ])
         .setup(|app| {
             service::tray::create(app.handle())?;
             service::watcher::spawn(app.handle().clone());
+            service::updater::spawn(app.handle().clone());
             if !std::env::args().any(|a| a == MINIMIZED_FLAG) {
                 show_main_window(app.handle());
             }

@@ -19,12 +19,30 @@ pub struct Prefs {
     pub low_battery_threshold: u8,
     /// UI / tray language: "auto" (system), "en" or "pl"
     pub language: String,
+    /// Check GitHub for a new version once a day (service/updater.rs)
+    pub check_updates: bool,
 }
 
 impl Default for Prefs {
     fn default() -> Self {
-        Self { auto_apply: true, notify_low_battery: true, low_battery_threshold: 15, language: "auto".into() }
+        Self {
+            auto_apply: true,
+            notify_low_battery: true,
+            low_battery_threshold: 15,
+            language: "auto".into(),
+            check_updates: true,
+        }
     }
+}
+
+/// What the updater remembers between runs.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(default)]
+pub struct UpdateMemory {
+    /// A release the user chose to skip
+    pub skip_version: String,
+    /// The last release a notification was shown for (one per version)
+    pub notified_version: String,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -137,6 +155,8 @@ pub struct Config {
     /// Keyed by "vvvv:pppp"
     #[serde(default)]
     pub devices: BTreeMap<String, DeviceConfig>,
+    #[serde(default)]
+    pub updates: UpdateMemory,
 }
 
 fn config_version() -> u32 {
@@ -145,7 +165,12 @@ fn config_version() -> u32 {
 
 impl Default for Config {
     fn default() -> Self {
-        Self { version: config_version(), prefs: Prefs::default(), devices: BTreeMap::new() }
+        Self {
+            version: config_version(),
+            prefs: Prefs::default(),
+            devices: BTreeMap::new(),
+            updates: UpdateMemory::default(),
+        }
     }
 }
 

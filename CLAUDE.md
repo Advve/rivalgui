@@ -90,6 +90,22 @@ Re-run both tools, then `cargo test`. A new rivalcfg handler shows up as a golde
   - `watcher.rs`: thread that scans every 2 s for hot-plug. It polls wireless battery every 60 s while online
     and every 4 s while asleep (to catch wake-up), and handles low-battery notification and auto-apply.
   - `tray.rs`: menu, tooltip and a battery gauge drawn into the icon.
+  - `updater.rs`: update check and install through `tauri-plugin-updater` (Rust side only, no JS
+    plugin package).
+    - The check runs 2 min after start, then daily while `prefs.check_updates` is on. It fetches
+      `latest.json` from `releases/latest/download`. `RIVALGUI_UPDATE_URL` (https only) points it
+      elsewhere for testing.
+    - It offers the version in the tray ("Update available" submenu) and the UI (`AppInfo.update`,
+      the `update-changed` event), with one notification per version. `Config.updates` remembers
+      `skip_version` and `notified_version`.
+    - Install uses `download_and_install`, then `app.restart()`; on Windows the NSIS installer
+      (`/UPDATE`) restarts the app itself. If it fails, the release page opens.
+    - **Signing:** `plugins.updater.pubkey` in `tauri.conf.json` must be the public half of the
+      `TAURI_SIGNING_PRIVATE_KEY` secret. CI turns on `createUpdaterArtifacts` only when that secret
+      is present (tags), so PR and local builds don't need the key.
+    - `tools/updater-manifest.mjs` writes `latest.json` with keys per installer
+      (`windows-x86_64-nsis`/`-msi`, `linux-x86_64-appimage`/`-deb`/`-rpm`) and fails if nothing
+      is signed.
 - **`commands.rs`**: Tauri IPC commands. Device work runs in `spawn_blocking`.
 - **`lib.rs`**:
   - The main window is created with `create: false` and built on demand.

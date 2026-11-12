@@ -59,8 +59,19 @@ jobs:
       - name: Regenerate third-party notices
         run: npm run notices
 
+      # With the signing key (version tags), every installer also gets a .sig for the in-app updater.
+      # Without it (pull requests, local builds) the bundles are built unsigned as before.
       - name: Build bundles
-        run: npx tauri build --bundles ${{ matrix.bundles }}
+        shell: bash
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ startsWith(github.ref, 'refs/tags/v') && secrets.TAURI_SIGNING_PRIVATE_KEY || '' }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ startsWith(github.ref, 'refs/tags/v') && secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD || '' }}
+        run: |
+          extra=()
+          if [ -n "$TAURI_SIGNING_PRIVATE_KEY" ]; then
+            extra=(--config '{"bundle":{"createUpdaterArtifacts":true}}')
+          fi
+          npx tauri build --bundles ${{ matrix.bundles }} "${extra[@]}"
 
       - uses: actions/upload-artifact@v4
         with:
@@ -71,6 +82,7 @@ jobs:
             src-tauri/target/release/bundle/**/*.deb
             src-tauri/target/release/bundle/**/*.rpm
             src-tauri/target/release/bundle/**/*.AppImage
+            src-tauri/target/release/bundle/**/*.sig
 
   # On a version tag (v1.2.3): publish a GitHub Release with every installer
   release:
@@ -90,11 +102,13 @@ jobs:
         with:
           path: artifacts
 
-      - name: Collect installers and checksums
+      - name: Collect installers, updater manifest and checksums
         run: |
           mkdir release
-          find artifacts -type f \( -name '*.exe' -o -name '*.msi' -o -name '*.deb' -o -name '*.rpm' -o -name '*.AppImage' \) \
+          find artifacts -type f \( -name '*.exe' -o -name '*.msi' -o -name '*.deb' -o -name '*.rpm' -o -name '*.AppImage' -o -name '*.sig' \) \
             -exec cp {} release/ \;
+          node tools/updater-manifest.mjs "${GITHUB_REF_NAME#v}" release > latest.json
+          mv latest.json release/
           cd release
           sha256sum * > SHA256SUMS.txt
           ls -la

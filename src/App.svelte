@@ -32,9 +32,13 @@
 
   onMount(() => {
     let unlisten: (() => void) | undefined;
+    let unlistenUpdate: (() => void) | undefined;
     (async () => {
       try {
         unlisten = await api.onDevicesChanged(setDevices);
+        unlistenUpdate = await api.onUpdateChanged((update) => {
+          if (info) info = { ...info, update };
+        });
         info = await api.appInfo();
         setLanguage(info.prefs.language);
         setDevices(await api.listDevices());
@@ -42,7 +46,10 @@
         fatal = errorText(e);
       }
     })();
-    return () => unlisten?.();
+    return () => {
+      unlisten?.();
+      unlistenUpdate?.();
+    };
   });
 </script>
 
