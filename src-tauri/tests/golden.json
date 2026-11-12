@@ -19126,6 +19126,714 @@
 },
 {
 "vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": "400, 800, 1600, 2400, 3200",
+"bytes": "0200340500900190010303200320030303400640060303600960090303800c800c0303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": 1,
+"bytes": "0200340100010001000303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": 65000,
+"bytes": "0200340100e8fde8fd0303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": "2:8, 8:2",
+"bytes": "0200340200020008000303080002000303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": "2, 8:2",
+"bytes": "0200340200020002000303080002000303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": [
+[
+2,
+8
+],
+[
+8,
+2
+]
+],
+"bytes": "0200340200020008000303080002000303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": [
+2,
+[
+8,
+2
+]
+],
+"bytes": "0200340200020002000303080002000303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": [
+[
+2
+]
+],
+"bytes": "0200340100020002000303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": "1:65000, 2:64999, 3:64998, 4:64997, 5:64996",
+"bytes": "02003405000100e8fd03030200e7fd03030300e6fd03030400e5fd03030500e4fd0303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": [
+1,
+1,
+1,
+1,
+1,
+1
+],
+"error": "ValueError: you provided 6 preset but the device accepts a maximum of 5 presets"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": "2:2:2",
+"error": "ValueError: too many values to unpack (expected 2, got 3)"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": [
+1,
+2,
+3
+],
+"selected_preset": 0,
+"bytes": "0200340300010001000303020002000303030003000303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": [
+1,
+2,
+3
+],
+"selected_preset": 1,
+"bytes": "0200340301010001000303020002000303030003000303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": [
+1,
+2,
+3
+],
+"selected_preset": 2,
+"bytes": "0200340302010001000303020002000303030003000303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sensitivity",
+"value": [
+1,
+2,
+3
+],
+"selected_preset": 3,
+"error": "ValueError: the selected preset is out of range"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "polling_rate",
+"value": 1000,
+"bytes": "02002d01000303"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "polling_rate",
+"value": 125,
+"bytes": "02002d01000606"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "polling_rate",
+"value": 250,
+"bytes": "02002d01000505"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "polling_rate",
+"value": 500,
+"bytes": "02002d01000404"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "polling_rate",
+"value": 2000,
+"bytes": "02002d01000202"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "polling_rate",
+"value": 4000,
+"bytes": "02002d01000101"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "polling_rate",
+"value": 8000,
+"bytes": "02002d01000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "polling_rate",
+"value": "__invalid__",
+"error": "ValueError: value must be one of [125, 250, 500, 1000, 2000, 4000, 8000]"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(button1=button1; button2=button2; button3=button3; button4=button4; button5=button5; button6=dpi; scrollup=scrollup; scrolldown=scrolldown; layout=qwerty)",
+"bytes": "02002a01000000000200000000030000000004000000000500000000300000000031000000003200000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "default",
+"bytes": "02002a01000000000200000000030000000004000000000500000000300000000031000000003200000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(Button1=Button2; Button2=Button1)",
+"bytes": "02002a02000000000100000000030000000004000000000500000000300000000031000000003200000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(ScrollDown=disabled)",
+"bytes": "02002a01000000000200000000030000000004000000000500000000300000000031000000000000000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(Button1=dpi)",
+"bytes": "02002a30000000000200000000030000000004000000000500000000300000000031000000003200000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(layout=qwerty; ScrollDown=A)",
+"bytes": "02002a01000000000200000000030000000004000000000500000000300000000031000000005104000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(layout=qwerty; ScrollDown=z)",
+"bytes": "02002a0100000000020000000003000000000400000000050000000030000000003100000000511d000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(layout=qwerty; ScrollDown=F5)",
+"bytes": "02002a0100000000020000000003000000000400000000050000000030000000003100000000513e000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(layout=qwerty; ScrollDown=Enter)",
+"bytes": "02002a01000000000200000000030000000004000000000500000000300000000031000000005128000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(layout=qwerty; ScrollDown=semicolon)",
+"bytes": "02002a01000000000200000000030000000004000000000500000000300000000031000000005133000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(layout=qwerty; ScrollDown=Space)",
+"bytes": "02002a0100000000020000000003000000000400000000050000000030000000003100000000512c000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(layout=qwerty; ScrollDown=LeftCtrl)",
+"bytes": "02002a010000000002000000000300000000040000000005000000003000000000310000000051e0000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(ScrollDown=PlayPause)",
+"bytes": "02002a010000000002000000000300000000040000000005000000003000000000310000000061cd000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(ScrollDown=VolumeUp)",
+"bytes": "02002a010000000002000000000300000000040000000005000000003000000000310000000061e9000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(ScrollDown=Mute)",
+"bytes": "02002a010000000002000000000300000000040000000005000000003000000000310000000061e2000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": {
+"buttons": {
+"scrolldown": "button1"
+}
+},
+"bytes": "02002a01000000000200000000030000000004000000000500000000300000000031000000000100000000"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(nosuchbutton=button1)",
+"error": "ValueError: This mouse have no button named 'nosuchbutton'"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "buttons_mapping",
+"value": "buttons(ScrollDown=nosuchkey)",
+"error": "ValueError: Unknown button, key or action 'nosuchkey'"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sleep_timer",
+"value": 5,
+"bytes": "020029e09304"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sleep_timer",
+"value": 1,
+"bytes": "02002960ea00"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sleep_timer",
+"value": 20,
+"bytes": "020029804f12"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sleep_timer",
+"value": 10,
+"bytes": "020029c02709"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sleep_timer",
+"value": 2,
+"bytes": "020029c0d401"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sleep_timer",
+"value": 11,
+"bytes": "02002920120a"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sleep_timer",
+"value": 0,
+"bytes": "02002960ea00"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "sleep_timer",
+"value": 21,
+"bytes": "020029804f12"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "click_response",
+"value": 8,
+"bytes": "02001c08"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "click_response",
+"value": 0,
+"bytes": "02001c00"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "click_response",
+"value": 20,
+"bytes": "02001c14"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "click_response",
+"value": 10,
+"bytes": "02001c0a"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "click_response",
+"value": 1,
+"bytes": "02001c01"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "click_response",
+"value": 11,
+"bytes": "02001c0b"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "click_response",
+"value": -1,
+"bytes": "02001c00"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "click_response",
+"value": 21,
+"bytes": "02001c14"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": "off",
+"bytes": "02001600f401"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 100,
+"bytes": "020016016400"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 200,
+"bytes": "02001601c800"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 300,
+"bytes": "020016012c01"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 400,
+"bytes": "020016019001"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 500,
+"bytes": "02001601f401"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 600,
+"bytes": "020016015802"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 700,
+"bytes": "02001601bc02"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 800,
+"bytes": "020016012003"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 900,
+"bytes": "020016018403"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 1000,
+"bytes": "02001601e803"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 1100,
+"bytes": "020016014c04"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 1200,
+"bytes": "02001601b004"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 1300,
+"bytes": "020016011405"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 1400,
+"bytes": "020016017805"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": 1500,
+"bytes": "02001601dc05"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "scroll_jump_protection",
+"value": "__invalid__",
+"error": "ValueError: value must be one of [off, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500]"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "motion_sync",
+"value": "off",
+"bytes": "02001800"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "motion_sync",
+"value": "on",
+"bytes": "02001801"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "motion_sync",
+"value": "__invalid__",
+"error": "ValueError: value must be one of [on, off]"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "lan_mode",
+"value": "off",
+"bytes": "02001a00"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "lan_mode",
+"value": "on",
+"bytes": "02001a01"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "lan_mode",
+"value": "__invalid__",
+"error": "ValueError: value must be one of [on, off]"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "max_performance",
+"value": "off",
+"bytes": "02001b00"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "max_performance",
+"value": "on",
+"bytes": "02001b01"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "max_performance",
+"value": "__invalid__",
+"error": "ValueError: value must be one of [on, off]"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "led_indicator",
+"value": "polling-rate",
+"bytes": "02002500"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "led_indicator",
+"value": "battery",
+"bytes": "02002501"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "led_indicator",
+"value": "off",
+"bytes": "02002502"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "led_indicator",
+"value": "__invalid__",
+"error": "ValueError: value must be one of [polling-rate, battery, off]"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "low_power_polling_rate",
+"value": 1000,
+"bytes": "020019000503"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "low_power_polling_rate",
+"value": 125,
+"bytes": "020019000506"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "low_power_polling_rate",
+"value": 250,
+"bytes": "020019000505"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "low_power_polling_rate",
+"value": 500,
+"bytes": "020019000504"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "low_power_polling_rate",
+"value": "led-only",
+"bytes": "020019000507"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "low_power_polling_rate",
+"value": "__invalid__",
+"error": "ValueError: value must be one of [led-only, 125, 250, 500, 1000]"
+},
+{
+"vid": 4152,
+"pid": 6272,
+"setting": "__save__",
+"value": null,
+"bytes": "020009"
+},
+{
+"vid": 4152,
 "pid": 5894,
 "setting": "sensitivity1",
 "value": 1000,

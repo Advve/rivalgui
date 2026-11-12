@@ -132,6 +132,10 @@ pub fn process_multidpi_xy(setting: &Setting, value: &Value, selected_preset: Op
     let dpi_length = setting
         .dpi_length_byte
         .ok_or("Missing 'dpi_length_byte' parameter for 'multidpi_range_choice_xy' handler")?;
+    let suffix = setting.preset_suffix.as_deref().unwrap_or_default();
+    if !suffix.is_empty() && mapping != "xyxy" {
+        return Err("'preset_suffix' parameter is only supported with 'xyxy' xy-mapping".into());
+    }
 
     let mut pairs = Vec::new();
     for [x, y] in &dpis {
@@ -147,6 +151,7 @@ pub fn process_multidpi_xy(setting: &Setting, value: &Value, selected_preset: Op
             for (x, y) in pairs {
                 out.extend(x);
                 out.extend(y);
+                out.extend(suffix.iter().map(|b| *b as i64));
             }
         }
         "xxyy" => {
@@ -180,5 +185,28 @@ mod tests {
         let v: Value = serde_json::from_str("[[100], [100, 150], 200]").unwrap();
         assert_eq!(normalize_xy(&v).unwrap(), vec![[100, 100], [100, 150], [200, 200]]);
         assert!(normalize_xy(&Value::from("1:2:3")).is_err());
+    }
+
+    #[test]
+    fn preset_suffix() {
+        let mut setting: Setting = serde_json::from_value(serde_json::json!({
+            "name": "sensitivity",
+            "report_type": 2,
+            "command": [0x34],
+            "value_type": "multidpi_range_choice_xy",
+            "input_range": [1, 65000, 1],
+            "output_choices_identity": true,
+            "xy_mapping": "xyxy",
+            "dpi_length_byte": 2,
+            "preset_suffix": [3, 3],
+            "max_preset_count": 5,
+        }))
+        .unwrap();
+        setting.expand_output_choices();
+        let out = process_multidpi_xy(&setting, &Value::from("800, 1200:1600"), Some(1)).unwrap();
+        assert_eq!(out, [2, 1, 0x20, 3, 0x20, 3, 3, 3, 0xB0, 4, 0x40, 6, 3, 3]);
+        assert_eq!(process_multidpi_xy(&setting, &Value::from(70000), None).unwrap(), [1, 0, 0xE8, 0xFD, 0xE8, 0xFD, 3, 3]);
+        setting.xy_mapping = Some("xxyy".into());
+        assert!(process_multidpi_xy(&setting, &Value::from(800), None).is_err());
     }
 }

@@ -28,18 +28,37 @@ _BATTERY_FORMATS = {
     "aerox": (20, True),
     # d[0], charging = d[2]
     "rival": (16, True),
+    # d[2], no charging state (swappable battery)
+    "rival_pro": (1, None),
+}
+
+# Probe data used to identify which parser a profile uses for the firmware version
+_FIRMWARE_PROBE = list(b"\x90\x001.2.3".ljust(32, b"\0"))
+_FIRMWARE_FORMATS = {
+    # "<cmd> 00 <ASCII version>", e.g. "2.14.2"
+    "ascii": [1, 2, 3],
 }
 
 
 def battery_format(battery_level):
     result = (
         battery_level["level"](_BATTERY_PROBE),
-        battery_level["is_charging"](_BATTERY_PROBE),
+        battery_level["is_charging"](_BATTERY_PROBE)
+        if "is_charging" in battery_level
+        else None,
     )
     for name, expected in _BATTERY_FORMATS.items():
         if result == expected:
             return name
     raise ValueError("Unknown battery formula (probe result: %r)" % (result,))
+
+
+def firmware_format(firmware_version):
+    result = list(firmware_version["parse"](_FIRMWARE_PROBE))
+    for name, expected in _FIRMWARE_FORMATS.items():
+        if result == expected:
+            return name
+    raise ValueError("Unknown firmware version parser (probe result: %r)" % (result,))
 
 
 def export_setting(name, info):
@@ -49,8 +68,14 @@ def export_setting(name, info):
             # JSON objects only have string keys: keep the original key type and order
             setting["choices"] = [{"key": k, "value": v} for k, v in value.items()]
         elif key == "output_choices":
-            # DPI -> device value tables (range_choice handlers)
-            setting["output_choices"] = [[k, v] for k, v in value.items()]
+            # DPI -> device value tables (range_choice handlers). Identity tables
+            # (DPI sent as-is, e.g. 65000 entries for the Rival Pro) are only
+            # flagged, the app rebuilds them from input_range.
+            start, stop, step = info["input_range"]
+            if list(value.items()) == [(i, i) for i in range(start, stop + 1, step)]:
+                setting["output_choices_identity"] = True
+            else:
+                setting["output_choices"] = [[k, v] for k, v in value.items()]
         elif key == "buttons":
             setting["buttons"] = [{"name": k, **v} for k, v in value.items()]
         else:
@@ -66,9 +91,15 @@ def export_profile(profile):
         "endpoint": profile["endpoint"],
         "settings": [export_setting(n, i) for n, i in profile["settings"].items()],
     }
-    for key in ("save_command", "firmware_version"):
-        if key in profile and profile[key]:
-            result[key] = profile[key]
+    if "save_command" in profile and profile["save_command"]:
+        result["save_command"] = profile["save_command"]
+    if "firmware_version" in profile and profile["firmware_version"]:
+        firmware = {
+            k: v for k, v in profile["firmware_version"].items() if k != "parse"
+        }
+        if "parse" in profile["firmware_version"]:
+            firmware["format"] = firmware_format(profile["firmware_version"])
+        result["firmware_version"] = firmware
     if "battery_level" in profile:
         battery = {
             k: v

@@ -27942,6 +27942,537 @@
    }
   },
   {
+   "name": "SteelSeries Rival Pro",
+   "vendor_id": 4152,
+   "product_id": 6272,
+   "endpoint": 2,
+   "settings": [
+    {
+     "name": "sensitivity",
+     "label": "Sensitivity presets",
+     "description": "Set sensitivity presets (DPI)",
+     "cli": [
+      "-s",
+      "--sensitivity"
+     ],
+     "report_type": 2,
+     "command": [
+      52
+     ],
+     "value_type": "multidpi_range_choice_xy",
+     "input_range": [
+      1,
+      65000,
+      1
+     ],
+     "output_choices_identity": true,
+     "xy_mapping": "xyxy",
+     "dpi_length_byte": 2,
+     "preset_suffix": [
+      3,
+      3
+     ],
+     "first_preset": 0,
+     "max_preset_count": 5,
+     "default": "400, 800, 1600, 2400, 3200"
+    },
+    {
+     "name": "polling_rate",
+     "label": "Polling rate",
+     "description": "Set polling rate (Hz)",
+     "cli": [
+      "-p",
+      "--polling-rate"
+     ],
+     "report_type": 2,
+     "command": [
+      45,
+      1,
+      0
+     ],
+     "value_type": "choice",
+     "choices": [
+      {
+       "key": 125,
+       "value": [
+        6,
+        6
+       ]
+      },
+      {
+       "key": 250,
+       "value": [
+        5,
+        5
+       ]
+      },
+      {
+       "key": 500,
+       "value": [
+        4,
+        4
+       ]
+      },
+      {
+       "key": 1000,
+       "value": [
+        3,
+        3
+       ]
+      },
+      {
+       "key": 2000,
+       "value": [
+        2,
+        2
+       ]
+      },
+      {
+       "key": 4000,
+       "value": [
+        1,
+        1
+       ]
+      },
+      {
+       "key": 8000,
+       "value": [
+        0,
+        0
+       ]
+      }
+     ],
+     "default": 1000
+    },
+    {
+     "name": "buttons_mapping",
+     "label": "Buttons mapping",
+     "description": "Set the mapping of the buttons",
+     "cli": [
+      "-b",
+      "--buttons"
+     ],
+     "report_type": 2,
+     "command": [
+      42
+     ],
+     "value_type": "buttons",
+     "buttons": [
+      {
+       "name": "Button1",
+       "id": 1,
+       "offset": 0,
+       "default": "button1"
+      },
+      {
+       "name": "Button2",
+       "id": 2,
+       "offset": 5,
+       "default": "button2"
+      },
+      {
+       "name": "Button3",
+       "id": 3,
+       "offset": 10,
+       "default": "button3"
+      },
+      {
+       "name": "Button4",
+       "id": 4,
+       "offset": 15,
+       "default": "button4"
+      },
+      {
+       "name": "Button5",
+       "id": 5,
+       "offset": 20,
+       "default": "button5"
+      },
+      {
+       "name": "Button6",
+       "id": 6,
+       "offset": 25,
+       "default": "dpi"
+      },
+      {
+       "name": "ScrollUp",
+       "id": 49,
+       "offset": 30,
+       "default": "scrollup"
+      },
+      {
+       "name": "ScrollDown",
+       "id": 50,
+       "offset": 35,
+       "default": "scrolldown"
+      }
+     ],
+     "button_field_length": 5,
+     "button_disable": 0,
+     "button_keyboard": 81,
+     "button_multimedia": 97,
+     "button_dpi_switch": 48,
+     "button_scroll_up": null,
+     "button_scroll_down": null,
+     "default": "buttons(button1=button1; button2=button2; button3=button3; button4=button4; button5=button5; button6=dpi; scrollup=scrollup; scrolldown=scrolldown; layout=qwerty)"
+    },
+    {
+     "name": "sleep_timer",
+     "label": "Sleep timer",
+     "description": "Set the IDLE time before the mouse goes to sleep mode (minutes)",
+     "cli": [
+      "-t",
+      "--sleep-timer"
+     ],
+     "report_type": 2,
+     "command": [
+      41
+     ],
+     "value_type": "range",
+     "input_range": [
+      1,
+      20,
+      1
+     ],
+     "output_range": [
+      60000,
+      1200000,
+      60000
+     ],
+     "range_length_byte": 3,
+     "default": 5
+    },
+    {
+     "name": "click_response",
+     "label": "Click response",
+     "description": "Set the click response time (debounce, ms)",
+     "cli": [
+      "--click-response"
+     ],
+     "report_type": 2,
+     "command": [
+      28
+     ],
+     "value_type": "range",
+     "input_range": [
+      0,
+      20,
+      1
+     ],
+     "output_range": [
+      0,
+      20,
+      1
+     ],
+     "default": 8
+    },
+    {
+     "name": "scroll_jump_protection",
+     "label": "Scroll jump protection",
+     "description": "Ignore the first scroll input after a cooldown period (ms)",
+     "cli": [
+      "--scroll-jump-protection"
+     ],
+     "report_type": 2,
+     "command": [
+      22
+     ],
+     "value_type": "choice",
+     "choices": [
+      {
+       "key": "off",
+       "value": [
+        0,
+        244,
+        1
+       ]
+      },
+      {
+       "key": 100,
+       "value": [
+        1,
+        100,
+        0
+       ]
+      },
+      {
+       "key": 200,
+       "value": [
+        1,
+        200,
+        0
+       ]
+      },
+      {
+       "key": 300,
+       "value": [
+        1,
+        44,
+        1
+       ]
+      },
+      {
+       "key": 400,
+       "value": [
+        1,
+        144,
+        1
+       ]
+      },
+      {
+       "key": 500,
+       "value": [
+        1,
+        244,
+        1
+       ]
+      },
+      {
+       "key": 600,
+       "value": [
+        1,
+        88,
+        2
+       ]
+      },
+      {
+       "key": 700,
+       "value": [
+        1,
+        188,
+        2
+       ]
+      },
+      {
+       "key": 800,
+       "value": [
+        1,
+        32,
+        3
+       ]
+      },
+      {
+       "key": 900,
+       "value": [
+        1,
+        132,
+        3
+       ]
+      },
+      {
+       "key": 1000,
+       "value": [
+        1,
+        232,
+        3
+       ]
+      },
+      {
+       "key": 1100,
+       "value": [
+        1,
+        76,
+        4
+       ]
+      },
+      {
+       "key": 1200,
+       "value": [
+        1,
+        176,
+        4
+       ]
+      },
+      {
+       "key": 1300,
+       "value": [
+        1,
+        20,
+        5
+       ]
+      },
+      {
+       "key": 1400,
+       "value": [
+        1,
+        120,
+        5
+       ]
+      },
+      {
+       "key": 1500,
+       "value": [
+        1,
+        220,
+        5
+       ]
+      }
+     ],
+     "default": "off"
+    },
+    {
+     "name": "motion_sync",
+     "label": "Motion sync",
+     "description": "Enable motion sync (smoother tracking for slow movements)",
+     "cli": [
+      "--motion-sync"
+     ],
+     "report_type": 2,
+     "command": [
+      24
+     ],
+     "value_type": "choice",
+     "choices": [
+      {
+       "key": "on",
+       "value": 1
+      },
+      {
+       "key": "off",
+       "value": 0
+      }
+     ],
+     "default": "off"
+    },
+    {
+     "name": "lan_mode",
+     "label": "LAN mode",
+     "description": "Enable LAN mode (when multiple UWB mice are nearby, must be enabled on all mice)",
+     "cli": [
+      "--lan-mode"
+     ],
+     "report_type": 2,
+     "command": [
+      26
+     ],
+     "value_type": "choice",
+     "choices": [
+      {
+       "key": "on",
+       "value": 1
+      },
+      {
+       "key": "off",
+       "value": 0
+      }
+     ],
+     "default": "off"
+    },
+    {
+     "name": "max_performance",
+     "label": "Max performance",
+     "description": "Run the sensor in its highest performance mode all the time",
+     "cli": [
+      "--max-performance"
+     ],
+     "report_type": 2,
+     "command": [
+      27
+     ],
+     "value_type": "choice",
+     "choices": [
+      {
+       "key": "on",
+       "value": 1
+      },
+      {
+       "key": "off",
+       "value": 0
+      }
+     ],
+     "default": "off"
+    },
+    {
+     "name": "led_indicator",
+     "label": "LED indicator",
+     "description": "Set what the receiver LED indicates",
+     "cli": [
+      "--led-indicator"
+     ],
+     "report_type": 2,
+     "command": [
+      37
+     ],
+     "value_type": "choice",
+     "choices": [
+      {
+       "key": "polling-rate",
+       "value": 0
+      },
+      {
+       "key": "battery",
+       "value": 1
+      },
+      {
+       "key": "off",
+       "value": 2
+      }
+     ],
+     "default": "polling-rate"
+    },
+    {
+     "name": "low_power_polling_rate",
+     "label": "Low power mode polling rate",
+     "description": "Set the polling rate used when the battery is low (Hz, or 'led-only' to only warn using the LED)",
+     "cli": [
+      "--low-power-polling-rate"
+     ],
+     "report_type": 2,
+     "command": [
+      25,
+      0,
+      5
+     ],
+     "value_type": "choice",
+     "choices": [
+      {
+       "key": 125,
+       "value": 6
+      },
+      {
+       "key": 250,
+       "value": 5
+      },
+      {
+       "key": 500,
+       "value": 4
+      },
+      {
+       "key": 1000,
+       "value": 3
+      },
+      {
+       "key": "led-only",
+       "value": 7
+      }
+     ],
+     "default": 1000
+    }
+   ],
+   "save_command": {
+    "report_type": 2,
+    "command": [
+     9
+    ]
+   },
+   "firmware_version": {
+    "report_type": 2,
+    "command": [
+     144
+    ],
+    "response_length": 32,
+    "format": "ascii"
+   },
+   "battery_level": {
+    "report_type": 2,
+    "command": [
+     146
+    ],
+    "response_length": 5,
+    "format": "rival_pro"
+   }
+  },
+  {
    "name": "SteelSeries Rival 95",
    "vendor_id": 4152,
    "product_id": 5894,

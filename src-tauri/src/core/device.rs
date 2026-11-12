@@ -6,7 +6,7 @@ use serde::Serialize;
 use serde_json::Value;
 
 use super::encode::{self, Packet};
-use super::profile::{BatteryFormat, Profile, Setting};
+use super::profile::{BatteryFormat, FirmwareFormat, Profile, Setting};
 use super::pyval::Result;
 
 /// Delay between two commands so the device is not overloaded (Kinzu v2 & co).
@@ -41,10 +41,32 @@ pub fn parse_battery(format: BatteryFormat, data: &[u8]) -> Battery {
             None => (None, None),
         },
         BatteryFormat::Rival => (data.first().map(|b| *b as i64), data.get(2).map(|b| *b != 0)),
+        BatteryFormat::RivalPro => (data.get(2).map(|b| *b as i64), None),
     };
     match level {
         Some(l) if (0..=100).contains(&l) => Battery { level: Some(l as u8), charging },
         _ => Battery::default(),
+    }
+}
+
+/// Decodes a firmware version response (`Mouse.firmware_version`).
+pub fn parse_firmware_version(format: FirmwareFormat, data: &[u8]) -> Option<String> {
+    if data.is_empty() {
+        return None;
+    }
+    match format {
+        FirmwareFormat::Raw => Some(data.iter().map(|b| b.to_string()).collect::<Vec<_>>().join(".")),
+        FirmwareFormat::Ascii => {
+            let text = data.get(2..).unwrap_or_default();
+            let text = &text[..text.iter().position(|b| *b == 0).unwrap_or(text.len())];
+            // Same as rivalcfg: "2.14.2" -> (2, 14, 2) -> "2.14.2"
+            let parts: Option<Vec<u32>> = std::str::from_utf8(text)
+                .ok()?
+                .split('.')
+                .map(|n| n.parse().ok())
+                .collect();
+            Some(parts?.iter().map(|n| n.to_string()).collect::<Vec<_>>().join("."))
+        }
     }
 }
 
@@ -99,9 +121,7 @@ impl Device {
         let packet = encode::command_packet(cmd.report_type, &cmd.command, 0)?;
         self.send(&packet)?;
         let data = self.transport.read(cmd.response_length, READ_TIMEOUT_MS)?;
-        Ok((!data.is_empty()).then(|| {
-            data.iter().map(|b| b.to_string()).collect::<Vec<_>>().join(".")
-        }))
+        Ok(parse_firmware_version(cmd.format, &data))
     }
 }
 
@@ -118,5 +138,18 @@ mod tests {
         assert_eq!(parse_battery(BatteryFormat::Aerox, &[]), Battery::default());
         assert_eq!(parse_battery(BatteryFormat::Aerox, &[0, 0x00]), Battery::default());
         assert_eq!(parse_battery(BatteryFormat::Rival, &[200, 0, 1]), Battery::default());
+        let b = parse_battery(BatteryFormat::RivalPro, &[0x92, 0x00, 87, 0x01, 52]);
+        assert_eq!(b, Battery { level: Some(87), charging: None });
+        assert_eq!(parse_battery(BatteryFormat::RivalPro, &[0x92, 0x00]), Battery::default());
+    }
+
+    #[test]
+    fn firmware_formats() {
+        assert_eq!(parse_firmware_version(FirmwareFormat::Raw, &[1, 33]), Some("1.33".into()));
+        assert_eq!(parse_firmware_version(FirmwareFormat::Raw, &[]), None);
+        let mut data = b"\x90\x002.14.2".to_vec();
+        data.resize(32, 0);
+        assert_eq!(parse_firmware_version(FirmwareFormat::Ascii, &data), Some("2.14.2".into()));
+        assert_eq!(parse_firmware_version(FirmwareFormat::Ascii, b"\x90\x00garbage"), None);
     }
 }

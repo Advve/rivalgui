@@ -143,6 +143,10 @@ SUBSYSTEM=="usb", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="183c", MODE="0666"
 SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="183e", MODE="0666"
 SUBSYSTEM=="usb", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="183e", MODE="0666"
 
+# SteelSeries Rival Pro
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="1880", MODE="0666"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="1880", MODE="0666"
+
 # SteelSeries Rival 95
 SUBSYSTEM=="hidraw", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="1706", MODE="0666"
 SUBSYSTEM=="usb", ATTRS{idVendor}=="1038", ATTRS{idProduct}=="1706", MODE="0666"

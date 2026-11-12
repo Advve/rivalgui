@@ -88,8 +88,8 @@
         <h1>{name.title}</h1>
         <div class="meta">
           <span class="chip">
-            <Icon name={/ghz|wireless/i.test(name.mode ?? "") ? "wifi" : "usb"} size={12} />
-            {name.mode ? td(name.mode) : t("wired")}
+            <Icon name={/ghz|wireless/i.test(name.mode ?? "") || (!name.mode && status.wireless) ? "wifi" : "usb"} size={12} />
+            {name.mode ? td(name.mode) : status.wireless ? t("wireless") : t("wired")}
           </span>
           <BatteryBadge device={status} />
           {#if status.firmware}<span class="faint">{t("firmware", { version: status.firmware })}</span>{/if}

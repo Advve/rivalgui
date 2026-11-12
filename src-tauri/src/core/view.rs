@@ -67,11 +67,22 @@ pub struct SettingView {
 }
 
 pub fn group_of(name: &str) -> &'static str {
-    if name.starts_with("sensitivity") || name == "polling_rate" {
+    if name.starts_with("sensitivity")
+        || matches!(
+            name,
+            "polling_rate"
+                | "lift_off_distance"
+                | "click_response"
+                | "scroll_jump_protection"
+                | "motion_sync"
+                | "lan_mode"
+                | "max_performance"
+        )
+    {
         "performance"
     } else if name.starts_with("btn") || name.starts_with("buttons") {
         "buttons"
-    } else if name.ends_with("_timer") {
+    } else if name.ends_with("_timer") || name.starts_with("low_power_") || name == "led_indicator" {
         "power"
     } else {
         "lighting"

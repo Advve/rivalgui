@@ -14,8 +14,12 @@ static CATALOG: OnceLock<Catalog> = OnceLock::new();
 /// Returns the catalog of all supported devices (parsed once).
 pub fn catalog() -> &'static Catalog {
     CATALOG.get_or_init(|| {
-        serde_json::from_str(include_str!("../../resources/profiles.json"))
-            .expect("embedded profiles.json is invalid")
+        let mut catalog: Catalog = serde_json::from_str(include_str!("../../resources/profiles.json"))
+            .expect("embedded profiles.json is invalid");
+        for setting in catalog.profiles.iter_mut().flat_map(|p| p.settings.iter_mut()) {
+            setting.expand_output_choices();
+        }
+        catalog
     })
 }
 
@@ -80,15 +84,30 @@ pub struct QueryCommand {
     pub report_type: u8,
     pub command: Vec<u8>,
     pub response_length: usize,
+    #[serde(default)]
+    pub format: FirmwareFormat,
+}
+
+/// How a firmware version response is decoded (the `parse` lambdas of rivalcfg profiles).
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum FirmwareFormat {
+    /// Every byte is a version number
+    #[default]
+    Raw,
+    /// `<cmd> 00 <ASCII version>`, e.g. "2.14.2"
+    Ascii,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum BatteryFormat {
     /// level = ((d[1] & 0x7F) - 1) * 5, charging = d[1] & 0x80
     Aerox,
     /// level = d[0], charging = d[2]
     Rival,
+    /// level = d[2], no charging state (swappable battery)
+    RivalPro,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -162,6 +181,10 @@ pub struct Setting {
     /// range_choice handlers: (input DPI, device value) table of the sensor
     #[serde(default)]
     pub output_choices: Option<Vec<(i64, i64)>>,
+    /// `output_choices` maps every value of `input_range` to itself (exported as a flag to keep
+    /// profiles.json small, see [`Setting::expand_output_choices`])
+    #[serde(default, skip_serializing)]
+    pub output_choices_identity: bool,
     /// multidpi_range_choice_xy: "xyxy" or "xxyy"
     #[serde(default)]
     pub xy_mapping: Option<String>,
@@ -169,6 +192,9 @@ pub struct Setting {
     pub range_length_byte: Option<usize>,
     #[serde(default)]
     pub dpi_length_byte: Option<usize>,
+    /// multidpi_range_choice_xy ("xyxy" only): bytes appended after each preset
+    #[serde(default)]
+    pub preset_suffix: Option<Vec<u8>>,
     #[serde(default)]
     pub first_preset: Option<i64>,
     #[serde(default)]
@@ -204,6 +230,16 @@ pub struct Setting {
 impl Setting {
     pub fn value_type(&self) -> &str {
         self.value_type.as_deref().unwrap_or("")
+    }
+
+    /// Rebuilds an identity `output_choices` table from `input_range`.
+    pub fn expand_output_choices(&mut self) {
+        if let (true, Some([first, last, step])) = (self.output_choices_identity, self.input_range) {
+            if step > 0 {
+                self.output_choices = Some((first..=last).step_by(step as usize).map(|v| (v, v)).collect());
+            }
+            self.output_choices_identity = false;
+        }
     }
 
     /// Settings without a value (e.g. "enable rainbow effect") are one-shot actions.

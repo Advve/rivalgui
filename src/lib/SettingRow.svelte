@@ -35,7 +35,8 @@
   let pending: Json | undefined;
 
   const unit = $derived.by(() => {
-    const m = setting.description.match(/\((minutes|seconds|ms|dpi|hz|%)/i);
+    // "(ms)", "(minutes, 0 = disable)", "(debounce, ms)"
+    const m = setting.description.match(/\((?:[^)]*,\s*)?(minutes|seconds|ms|dpi|hz|%)/i);
     if (!m) return "";
     return { minutes: "min", seconds: "s" }[m[1].toLowerCase()] ?? m[1];
   });

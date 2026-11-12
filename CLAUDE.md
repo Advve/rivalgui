@@ -46,7 +46,11 @@ delegates events, so synthetic events need `{bubbles: true}`.
     multimedia key layouts. It is embedded with `include_str!` and parsed once (`core::profile::catalog()`).
     - Python dict keys that are ints (`choices`, `output_choices`) are exported as lists to keep their type
       and order.
-    - Battery lambdas become `battery_level.format: "aerox" | "rival"`.
+    - Battery lambdas become `battery_level.format: "aerox" | "rival" | "rival_pro"`, and a firmware
+      `parse` lambda becomes `firmware_version.format: "ascii"` (no format = raw bytes). Both are
+      identified by probing the lambdas; an unknown one fails the export.
+    - `output_choices` tables that map every `input_range` value to itself (the Rival Pro's 65000 DPI) are
+      exported as `output_choices_identity: true` and rebuilt by `Setting::expand_output_choices()`.
   - `src-tauri/resources/99-steelseries-rival.rules`, the udev rules. They are embedded for the in-app
     installer and shipped in the .deb/.rpm.
 - `tools/gen_golden.py` drives rivalcfg's `Mouse` + `FakeDevice` over every PID × setting × representative

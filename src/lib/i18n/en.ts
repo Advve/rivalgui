@@ -11,6 +11,7 @@ export const en = {
 
   // Device header
   wired: "Wired",
+  wireless: "Wireless",
   firmware: "Firmware {version}",
   reapply: "Re-apply",
   reapplyTitle: "Send every setting of this profile to the mouse again",
