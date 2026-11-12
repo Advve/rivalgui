@@ -163,7 +163,7 @@ be updated from the app any more.
 
 ## Changelog
 
-- **Unreleased**
+- **1.1.0**, update check and one-click install
   - New: update check and one-click install. When a new version is out, an *Update available*
     item appears in the tray menu and in Preferences, with one notification; *Install and restart*
     downloads it, verifies its signature and restarts. Turn off the daily check in
